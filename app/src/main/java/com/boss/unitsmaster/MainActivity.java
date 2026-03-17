@@ -1,6 +1,9 @@
 package com.boss.unitsmaster;
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -10,17 +13,33 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 1. 确保你的 layout 名字叫 activity_main
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
 
-        // 2. 初始化 AdMob (这一步没做也会闪退)
-        MobileAds.initialize(this, initializationStatus -> {});
-
-        // 3. 加载广告 (前提是你的 XML 里得有 adView 这个 ID)
+        // 1. 初始化广告
+        MobileAds.initialize(this, status -> {});
         AdView mAdView = findViewById(R.id.adView);
         if (mAdView != null) {
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mAdView.loadAd(adRequest);
+            mAdView.loadAd(new AdRequest.Builder().build());
         }
+
+        // 2. BMI 业务逻辑
+        EditText etHeight = findViewById(R.id.etHeight);
+        EditText etWeight = findViewById(R.id.etWeight);
+        Button btnCalculate = findViewById(R.id.btnCalculate);
+        TextView tvResult = findViewById(R.id.tvResult);
+
+        btnCalculate.setOnClickListener(v -> {
+            String hStr = etHeight.getText().toString();
+            String wStr = etWeight.getText().toString();
+            
+            if (!hStr.isEmpty() && !wStr.isEmpty()) {
+                float height = Float.parseFloat(hStr) / 100; // 厘米转米
+                float weight = Float.parseFloat(wStr);
+                float bmi = weight / (height * height);
+                
+                String level = (bmi < 18.5) ? "偏瘦" : (bmi < 24) ? "正常" : "偏胖";
+                tvResult.setText(String.format("BMI: %.2f\n状态: %s", bmi, level));
+            }
+        });
     }
 }
