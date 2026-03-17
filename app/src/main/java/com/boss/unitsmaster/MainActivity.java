@@ -13,7 +13,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity);
+        // 必须改成 activity_main，对应你截图里的那个文件名
+        setContentView(R.layout.activity_main);
 
         // 1. 初始化广告
         MobileAds.initialize(this, status -> {});
