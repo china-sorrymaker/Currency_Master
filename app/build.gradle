@@ -7,7 +7,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.boss.unitsmaster"
+        applicationId "com.boss.bmi.pro"
         minSdk 24
         targetSdk 34
         versionCode 1
